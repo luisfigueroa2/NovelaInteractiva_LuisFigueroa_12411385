@@ -16,7 +16,6 @@ package novelainteractiva;
 -acto: variable int que guarda que escena se esta jugando
 -rand: variable random para los parametros de la paciencia
 -continuar: variable boolean que lee cuando se acaba el juego por medio de paciencia
--respv: variable boolean que lee la respuesta del usuario para que solo use 's' o 'n'
 -nombre: el nombre del usuario
 -opcion: variable tipo int usada para visualizar las opciones que tiene el usuario en el JOptionPane
 -fin: boolean que controla cuando el juego se acaba por medio de llegar al maximo de escenas
@@ -24,9 +23,10 @@ package novelainteractiva;
 GLOSARIO DE METODOS:
 -generarmaxpac: usa el random y dos parametros para generar la paciencia maxima de la partida
 -inicio: este metodo crea las escenas agregandolas al arraylist
--iniciarvideojogo: metodo que inicia el juego pidiendole al usuario su nombre y mantiene la cuenta de la paciencia, terminando el juego si es necesario
+-iniciarvideojogo: metodo que inicia el juego pidiendole al usuario su nombre y terminando el juego al llegar al fin
 -mostrarops: usa JOptionPane para mostrarle las opciones de dialogo al usuario y regresar su respuesta
 -choose!: este metodo es el que tiene todos los switches que controlan como avanza el juego segun el dialogo
+-gameu: este metodo recursivo es el que controla la paciencia del usuario, repitiendose hasta que se acaba la paciencia, el usuario decide no continuar o responde mal
 
 -EL USO DE GUI ES BASTANTE BASICO EN ESTE AVANCE, CONTINUARE ESTUDIANDO COMO HACER UNA INTERFAZ COMPLETA PARA LA ENTREGA FINAL
 
@@ -59,6 +59,14 @@ class NovelaInteractiva {
     private ArrayList<Escena> escenas;
     private int acto;
     private boolean fin;
+    
+    public static void main(String[] args) {
+        jogo hola = new jogo();
+        hola.setTitle("sexo");
+        hola.setVisible(true);
+        NovelaInteractiva jogo = new NovelaInteractiva();
+        jogo.iniciarvideojogo();
+    }
     // Constructor que inicializa la paciencia en 0 y asigna la paciencia maxima aleatoria
     public NovelaInteractiva() {
         paciencia = 0;
@@ -83,48 +91,49 @@ class NovelaInteractiva {
     }
 
     public void iniciarvideojogo() {
-        boolean continuar = true;
         String nombre = JOptionPane.showInputDialog("Por favor, introduce tu nombre:");
         Jugador jugador = new Jugador(nombre);
-        while (continuar && paciencia <= maxpac && !fin) {
-            String opcion = mostrarops();
-            choose(opcion);
+        gameu();
 
+        if (fin) {
+            System.out.println("Si mama...");
+        } else {
+            System.out.println("Parece que " + nombre + " no me sirve... probemos algo mas...");
+        }
+    }
+    private void gameu(){
             if (paciencia > maxpac) {
                 System.out.println("Has perdido demasiada paciencia....");
-                continuar = false;
-}
-                else if (acto >= escenas.size() && paciencia <= maxpac) {
-                System.out.println("Compraste la leche?.");
+                return;
+            }else if (acto >= escenas.size() && paciencia <= maxpac) {
+                System.out.println("Compraste la leche..?");
                 fin = true;
-                        
-                        }
-                else {
-                System.out.printf("Cuidado con la paciencia, no dejes que suba... Paciencia actual: %d/%d%n ", paciencia, maxpac);
-                boolean respv = false;
-                while (!respv) {
+                return;       
+            }
+            String opcion = mostrarops();
+            choose(opcion);
+            
+            if (paciencia > maxpac){
+                System.out.println("Has perdido demasiada paciencia....");
+                return;
+            }
+             System.out.printf("Cuidado con la paciencia, no dejes que suba... Paciencia actual: %d/%d%n", paciencia, maxpac);
+             boolean continuar = false;
+                while (!continuar) {
                     System.out.print("Deseas continuar? (s/n): ");
                     char resp = entrada.next().charAt(0);
                     if (resp == 'n' || resp == 'N') {
-                        continuar = false;
-                        respv = true;
+                        return;
                     } else if (resp == 's' || resp == 'S') {
-                        respv = true;
+                        continuar = true;
                     } else {
                         System.out.println("Oye, tomate esto en serio, ingresa lo que te dicen");
                     }
-                }//while respv
-            }//else paciencia
-        }//fin while continuar
+            }//fin while continuar
+            gameu();
+        }//fin recursiva
         
         
-        if (fin) {
-        System.out.println("Si mama...");
-    } else {
-        System.out.println("Parece que " + nombre + " no me sirve... probemos algo mas...");
-    }
-    }
-    
     
     public String mostrarops() {
         Escena escena = escenas.get(acto);
@@ -174,11 +183,7 @@ class NovelaInteractiva {
         }
         acto++;
     }
-
-    public static void main(String[] args) {
-        NovelaInteractiva jogo = new NovelaInteractiva();
-        jogo.iniciarvideojogo();
-    }
 }
+
 
 
