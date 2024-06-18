@@ -75,7 +75,7 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
     public void iniciarvideojogo(Jugador jugador) {//METODO PARA INICIAR EL JUEGO
         this.jugador = jugador;
         reiniciarJuego();
-        actualizarEscena();
+        continuar();
     }//FIN METODO DE INICIAR EL JUEGO
 
     public static int generarMaxPac(int min, int max) {//METODO PARA GENERAL LA PACIENCIA
@@ -85,22 +85,26 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
 
     public void inicio() {//METODO QUE AGREGA LAS ESCENAS AL ARRAY LIST DE ESCENAS
         escenas.add(new Escena("Ayudame a comprar leche", new String[]{"No quiero", "Vaya pue", "..."}));
-        escenas.add(new Escena("Ya estan adentro de la tienda, por alguna razon el niño se quedo paralizado frente al cajero...No se mueve y hay gente en la fila esperando.", new String[]{"Tranquilo, dale el dinero", "Tan inutil eres?", "La gente espera, apurate"}));
-        escenas.add(new Escena("*Nos cuenta un poco de su historia*.", new String[]{"Sos un rarito", "*escuchar*", "No quiero saberlo"}));
-        escenas.add(new Escena("Ayudame a comprar leche", new String[]{"No quiero", "Vaya pue", "..."}));
-        escenas.add(new Escena("Ya estan adentro de la tienda, por alguna razon el niño se quedo paralizado frente al cajero...No se mueve y hay gente en la fila esperando.", new String[]{"Tranquilo, dale el dinero", "Tan inutil eres?", "La gente espera, apurate"}));
-        escenas.add(new Escena("*Nos cuenta un poco de su historia*.", new String[]{"Sos un rarito", "*escuchar*", "No quiero saberlo"}));
+        escenas.add(new Escena("Mi mama dijo que comprara un tipo de leche, pero no me acuerdo cual, meh, no importa agarrare esta *agarro leche entera*", new String[]{"Si no te acordas fijo no es importante", "Mandale un mensaje y preguntale, estupido", "Sos un pedazo de papo"}));
+        escenas.add(new Escena("Ya estan adentro de la tienda, por alguna razon el niño se quedo paralizado frente al cajero...No se mueve y hay gente en la fila esperando.", new String[]{"Tranquilo, dale el dinero", "Tan inutil eres?", "Sos un imbecil"}));
+        escenas.add(new Escena("*En el camino de regreso se escucha un fuerte sonido detras de el*", new String[]{"*no decir nada*", "CUIDADO", "*NO DIGAS NADA*"}));
+        escenas.add(new Escena("Que grosero ese oso corriendo por la calle.", new String[]{"Era un camion, casi mueres", "Si, que grosero", "*Quedarte callado*"}));
+        escenas.add(new Escena("*Mientras que regresan el niño aparenta estarle hablando a alguien", new String[]{"A quien le hablas?", "A quien le hablas?", "A quien le hablas?"}));
+        escenas.add(new Escena("*El niño continua hablando con su papa*", new String[]{"Pero tu papa esta muerto", "Dale", "No murio hace años??"}));
+        escenas.add(new Escena("Tengo sed y mi papa dijo que podia tomar de la leche, probemosla!", new String[]{"Dale pues probala", "No creo que sea buena idea", "Fondo! Fondo! Fondo!"}));
+        escenas.add(new Escena("*El niño entra a su apartamento y su mama le pregunta* cOmPrAStE lA lEcHE?", new String[]{"Si mama", "Si mama", "Si mama"}));
+        escenas.add(new Escena("sIrViO La mEDiCinA?¿?¿", new String[]{"Si", "Si", "Si"}));
     }//FIN METODO INICIO
 
-    public void actualizarEscena() {//INICIO METODO PARA MOVERSE ATRAVES DEL JUEGO
+    public void continuar() {//INICIO METODO PARA MOVERSE ATRAVES DEL JUEGO
         
         if (paciencia > maxpac) {//CONDICION DE SALIDA #1: PACIENCIA GAME OVER 
             JOptionPane.showMessageDialog(gui, "Has perdido demasiada paciencia....");
-            JOptionPane.showMessageDialog(gui, "Parece que no me sirves...probemos algo mas...");
-            finJuego();
+            JOptionPane.showMessageDialog(gui, "Parece que esta no funciono...probemos algo mas...");
+            finJ();
             return;
         } else if (acto >= escenas.size() && paciencia <= maxpac) {//CONDICION DE SALIDA #2: FIN DEL JUEGO
-            JOptionPane.showMessageDialog(gui, "Compraste la leche..?");
+            JOptionPane.showMessageDialog(gui, "Andate a tu cuarto...");
             
                     //MATRIZ DE CARITA FELIZ YIPPEEEE
                     int row = 7;
@@ -143,9 +147,9 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
                 System.out.println("A nada va? se mas amable a la proxima...");
             }
             System.out.println("---------------------------");
-            System.out.println("Te gusto el juego?");
-            String resp = entrada.next();
-            if (resp.equalsIgnoreCase("no")) {
+            System.out.println("Te gusto el juego? s/n");
+            char resp = entrada.next().charAt(0);
+            if (resp == 'n') {
                 //MATRIZ CARITA TRISTE :(
                 for (int i = 0; i < row; i++) {
                      for (int j = 0; j < col; j++) {
@@ -177,7 +181,7 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
                 System.out.println();
                 }
             }
-            finJuego();
+            finJ();
             return;
         }//FIN DEL JUEGO
 
@@ -199,12 +203,12 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
     
     public void reiniciarJuego() {//METODO PARA INICIALIZAR LOS VARIABLES USADOS DURANTE EL JUEGO Y REINICIARLOS AL TERMINAR
         paciencia = 0;
-        maxpac = generarMaxPac(1, 3);
+        maxpac = generarMaxPac(2, 4);
         acto = 0;
         fin = false;
     }//FIN METODO RESTART
     
-    public void finJuego() {//METODO PARA PEDIRLE AL USUARIO SI QUIERE JUGAR OTRA VEZ
+    public void finJ() {//METODO PARA PEDIRLE AL USUARIO SI QUIERE JUGAR OTRA VEZ
         fin = true;
         gui.dispose();//AL LLEGAR AQUI EL GUI SE CIERRA
         System.out.println("Deseas jugar otra vez? si/no");
@@ -222,7 +226,7 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
         public void actionPerformed(ActionEvent e) {
             JButton source = (JButton) e.getSource();
             choose(source.getText());
-            actualizarEscena();
+            continuar();
         }
     }//FIN CLASE BOTON
     
@@ -241,6 +245,17 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
                 JOptionPane.showMessageDialog(gui, "Por favor dime algo, no te quedes callado... ayudame...");
                 paciencia++;
                 break;
+            case "Si no te acordas fijo no es importante":
+                JOptionPane.showMessageDialog(gui, "Si fijo que si");
+                break;
+            case "Mandale un mensaje y preguntale, estupido":
+                JOptionPane.showMessageDialog(gui, "No traje mi telefono");
+                paciencia++;
+                break;
+            case "Sos un pedazo de papo":
+                JOptionPane.showMessageDialog(gui, "Dejame en paz");
+                paciencia++;
+                break;
             case "Tranquilo, dale el dinero":
                 JOptionPane.showMessageDialog(gui, "Ah, gracias, que haria sin ti.");
                 break;
@@ -248,19 +263,61 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
                 JOptionPane.showMessageDialog(gui, "El niño escucho tu insulto y pago, funciono pero no creo que este feliz.");
                 paciencia++;
                 break;
-            case "La gente espera, apurate":
-                JOptionPane.showMessageDialog(gui, "Ah, si, ya voy.");
-                break;
-            case "Sos un rarito":
+            case "Sos un imbecil":
                 JOptionPane.showMessageDialog(gui, "...");
-                paciencia = 99;
+                paciencia= 9999;
                 break;
-            case "*escuchar*":
-                JOptionPane.showMessageDialog(gui, "El niño sigue contando su historia.");
+            case "*no decir nada*":
+                JOptionPane.showMessageDialog(gui, "-----------------------------");
+                paciencia = 99999;
                 break;
-            case "No quiero saberlo":
-                JOptionPane.showMessageDialog(gui, "Perdon...");
+            case "*NO DIGAS NADA*":
+                JOptionPane.showMessageDialog(gui, "-----------------------------");
+                paciencia = 99999;
+                break;
+            case "CUIDADO":
+                JOptionPane.showMessageDialog(gui, "*El niño se mueve rapidamente de lado* Whoah");
+                break;
+            case "Era un camion, casi mueres.":
+                JOptionPane.showMessageDialog(gui, "De que estas hablando? Claramente era un oso");
                 paciencia++;
+                break;
+            case "Si, que grosero":
+                JOptionPane.showMessageDialog(gui, "Va? hoy en dia no respetan");
+                break;
+            case "*Quedarte callado*":
+                JOptionPane.showMessageDialog(gui, "Bueno continuemos");
+                break;
+            case "A quien le hablas?":
+                JOptionPane.showMessageDialog(gui, "Ah, a mi papa");
+                break;
+            case "Pero tu papa esta muerto":
+                JOptionPane.showMessageDialog(gui, "...");
+                paciencia = 9999;
+                break;
+            case "Dale":
+                JOptionPane.showMessageDialog(gui, "*Continua caminando*");
+                break;
+            case "No murio hace años?":
+                JOptionPane.showMessageDialog(gui, "De que hablas?");
+                paciencia = 9999;
+                break;
+            case "Dale pues probala":
+                JOptionPane.showMessageDialog(gui, "----------------");
+                paciencia = 9999;
+                break;
+            case "Fondo! Fondo! Fondo!":
+                JOptionPane.showMessageDialog(gui, "----------------");
+                paciencia = 9999;
+                break;
+            case "No creo que sea buena idea":
+                JOptionPane.showMessageDialog(gui, "Estas seguro? Bueno me has ayudado hasta aqui, te hare caso");
+                break;
+            case "Si mama":
+                JOptionPane.showMessageDialog(gui, "...");
+                break;
+            case "Si":
+                JOptionPane.showMessageDialog(gui, "...");
                 break;
             default:
                 JOptionPane.showMessageDialog(gui, "Opción no válida.");
@@ -268,7 +325,7 @@ class NovelaInteractiva {//INICIALIZA LOS VARIABLES IMPORTANTES
         }
         acto++;
     }//FIN METODO OPCIONES
-}
+}//FIN DEL CODIGO
 
 
 
